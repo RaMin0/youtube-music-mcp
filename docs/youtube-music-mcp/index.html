@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Music MCP | macOS Bridge for MCP Clients</title>
+  <meta name="description" content="Control YouTube Music from Codex, Claude Code, Claude Desktop, Cursor, Gemini CLI, GitHub Copilot, VS Code, Windsurf, and similar MCP clients through a macOS menu bar app, Safari extension, and local bridge.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="author" content="Ramy Aboulnaga">
+  <meta name="creator" content="Ramy Aboulnaga">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f3ec">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0f0f">
+  <meta name="application-name" content="YouTube Music MCP">
+  <meta name="apple-mobile-web-app-title" content="YouTube Music MCP">
+  <link rel="canonical" href="https://ramin0.me/youtube-music-mcp/">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
+  <link rel="preload" as="image" href="assets/logo.png" type="image/png">
+  <meta property="og:title" content="YouTube Music MCP | macOS Bridge for MCP Clients">
+  <meta property="og:description" content="Control YouTube Music from Codex, Claude Code, Claude Desktop, Cursor, Gemini CLI, GitHub Copilot, VS Code, Windsurf, and similar MCP clients through a macOS menu bar app, Safari extension, and local bridge.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="YouTube Music MCP">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://ramin0.me/youtube-music-mcp/">
+  <meta property="og:image" content="https://ramin0.me/youtube-music-mcp/assets/social-card.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="YouTube Music MCP social card showing the macOS bridge app and YouTube Music screenshots">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="YouTube Music MCP | macOS Bridge for MCP Clients">
+  <meta name="twitter:description" content="Control YouTube Music from Codex, Claude Code, Claude Desktop, Cursor, Gemini CLI, GitHub Copilot, VS Code, Windsurf, and similar MCP clients through a macOS menu bar app, Safari extension, and local bridge.">
+  <meta name="twitter:image" content="https://ramin0.me/youtube-music-mcp/assets/social-card.jpg">
+  <meta name="twitter:image:alt" content="YouTube Music MCP social card showing the macOS bridge app and YouTube Music screenshots">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "YouTube Music MCP",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS",
+      "softwareVersion": "0.1.0",
+      "url": "https://ramin0.me/youtube-music-mcp/",
+      "downloadUrl": "https://github.com/ramin0/youtube-music-mcp/releases/latest",
+      "image": "https://ramin0.me/youtube-music-mcp/assets/social-card.jpg",
+      "screenshot": [
+        "https://ramin0.me/youtube-music-mcp/assets/screenshots/playback-control.webp",
+        "https://ramin0.me/youtube-music-mcp/assets/screenshots/menu-bar-app.webp"
+      ],
+      "description": "Control YouTube Music from Codex, Claude Code, Claude Desktop, Cursor, Gemini CLI, GitHub Copilot, VS Code, Windsurf, and similar MCP clients through a macOS menu bar app, Safari extension, and local bridge.",
+      "sameAs": [
+        "https://github.com/ramin0/youtube-music-mcp",
+        "https://ramin0.me/youtube-music-mcp/"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Ramy Aboulnaga",
+        "url": "https://ramy.aboulna.ga"
+      },
+      "softwareRequirements": "macOS, Safari, YouTube Music, and a supported MCP client",
+      "browserRequirements": "Safari with the extension enabled on music.youtube.com",
+      "softwareHelp": {
+        "@type": "CreativeWork",
+        "name": "Setup Guide",
+        "url": "https://github.com/RaMin0/youtube-music-mcp/blob/main/docs/youtube-music-mcp/setup-guide.md"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Playback control: play, pause, next, previous, seek, and volume",
+        "Search and play",
+        "Repeat modes: off, one, all, and A-B section loop",
+        "Shuffle on, off, and toggle",
+        "Client-specific setup guide",
+        "Menu bar bridge app",
+        "Safari extension integration",
+        "Multi-tab support"
+      ]
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f3ec;
+      --surface: #fffdf8;
+      --border: #ddd2c3;
+      --border-strong: #c6b9a7;
+      --text: #1f1a15;
+      --text-muted: #6f6458;
+      --accent: #d11c1c;
+      --accent-strong: #ab0f0f;
+      --accent-soft: rgba(209, 28, 28, 0.12);
+      --code-bg: #f1e9dd;
+      --surface-top: rgba(255, 255, 255, 0.92);
+      --surface-bottom: rgba(255, 255, 255, 0.62);
+      --panel-border-soft: rgba(120, 93, 62, 0.14);
+      --panel-fill: rgba(255, 255, 255, 0.68);
+      --line-start: rgba(98, 78, 58, 0.16);
+      --line-end: rgba(209, 28, 28, 0.55);
+      --shadow-soft: rgba(74, 44, 17, 0.08);
+      --shadow-strong: rgba(74, 44, 17, 0.16);
+      --client-shadow: none;
+      --hero-glow: rgba(255, 0, 0, 0.16);
+      --hero-top: rgba(255, 255, 255, 0.9);
+      --hero-bottom: rgba(255, 255, 255, 0.62);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --mono: "SF Mono", Monaco, "Cascadia Mono", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #0f0f0f;
+        --surface: #1a1a1a;
+        --border: #2a2a2a;
+        --border-strong: #444;
+        --text: #e8e8e8;
+        --text-muted: #999;
+        --accent: #ff0000;
+        --accent-strong: #cc0000;
+        --accent-soft: rgba(255, 0, 0, 0.125);
+        --code-bg: #161616;
+        --surface-top: rgba(255, 255, 255, 0.045);
+        --surface-bottom: rgba(255, 255, 255, 0.015);
+        --panel-border-soft: rgba(255, 255, 255, 0.08);
+        --panel-fill: rgba(255, 255, 255, 0.02);
+        --line-start: rgba(255, 255, 255, 0.16);
+        --line-end: rgba(255, 0, 0, 0.55);
+        --shadow-soft: rgba(0, 0, 0, 0.18);
+        --shadow-strong: rgba(0, 0, 0, 0.35);
+        --client-shadow: 0 18px 30px var(--shadow-soft);
+        --hero-glow: rgba(255, 0, 0, 0.28);
+        --hero-top: rgba(255, 255, 255, 0.06);
+        --hero-bottom: rgba(255, 255, 255, 0.02);
+      }
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: var(--mono);
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.85em;
+      line-height: 1.7;
+    }
+    pre code { background: none; padding: 0; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 0 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-mark {
+      width: 112px;
+      height: 112px;
+      margin: 0 auto 24px;
+      padding: 10px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top, var(--hero-glow), transparent 62%),
+        linear-gradient(180deg, var(--hero-top), var(--hero-bottom));
+      border: 1px solid var(--panel-border-soft);
+      box-shadow: 0 22px 48px var(--shadow-strong);
+    }
+    .hero-mark img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+    }
+    .hero h1 {
+      font-size: 2.8em;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 1.2em;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-strong); text-decoration: none; }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--border-strong); text-decoration: none; }
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .btn-icon:hover { border-color: var(--border-strong); text-decoration: none; }
+    .btn-icon svg { width: 20px; height: 20px; }
+    .version-badge {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8em;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+    }
+    .muted {
+      color: var(--text-muted);
+    }
+    .section-intro {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* Architecture */
+    .architecture {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .architecture h2 {
+      font-size: 1.8em;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .architecture-flow {
+      display: grid;
+      gap: 10px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .architecture-step,
+    .architecture-connector {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+      gap: 26px;
+    }
+    .architecture-step {
+      align-items: center;
+    }
+    .architecture-gap {
+      min-height: 1px;
+    }
+    .flow-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.86em;
+      font-weight: 700;
+    }
+    .flow-diagram-node {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--panel-border-soft);
+      background: var(--panel-fill);
+    }
+    .flow-diagram-node strong {
+      display: block;
+      font-size: 0.96em;
+      line-height: 1.35;
+    }
+    .flow-diagram-link {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 14px;
+    }
+    .flow-diagram-line {
+      position: relative;
+      width: 2px;
+      height: 28px;
+      margin: 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--line-start), var(--line-end));
+    }
+    .flow-diagram-line::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      transform: translateX(-50%);
+      border-style: solid;
+      border-width: 8px 5px 0 5px;
+      border-color: var(--accent) transparent transparent transparent;
+    }
+    .flow-diagram-label {
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 0.68em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .flow-copy-text {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.92em;
+      line-height: 1.55;
+    }
+
+    /* Features */
+    .features {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .features h2 {
+      font-size: 1.8em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .feature-spotlight {
+      display: grid;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    .feature-card {
+      background:
+        linear-gradient(180deg, var(--surface-top), var(--surface-bottom)),
+        var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 14px 24px var(--shadow-soft);
+    }
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    .feature-card h3 {
+      font-size: 1em;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.9em;
+      color: var(--text-muted);
+    }
+    .spotlight-card {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      overflow: hidden;
+      border: 1px solid var(--panel-border-soft);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, var(--surface-top), var(--surface-bottom)),
+        var(--surface);
+      box-shadow: 0 22px 42px var(--shadow-strong);
+    }
+    .spotlight-card.menu {
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    }
+    .spotlight-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 32px 30px;
+    }
+    .spotlight-card.playback .spotlight-copy {
+      background:
+        radial-gradient(circle at top left, rgba(209, 28, 28, 0.12), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+    }
+    .spotlight-card.menu .spotlight-copy {
+      background:
+        radial-gradient(circle at top right, rgba(63, 120, 255, 0.12), transparent 40%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent);
+    }
+    .spotlight-kicker {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .spotlight-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .spotlight-title .feature-icon {
+      width: 34px;
+      height: 34px;
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .spotlight-copy h3 {
+      margin: 0;
+      font-size: 1.38rem;
+      line-height: 1.08;
+    }
+    .spotlight-copy p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.7;
+    }
+    .spotlight-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .spotlight-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border-soft);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      line-height: 1;
+    }
+    .spotlight-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+    }
+    .spotlight-card.playback .spotlight-visual {
+      background:
+        radial-gradient(circle at 22% 0%, rgba(209, 28, 28, 0.18), transparent 42%),
+        linear-gradient(180deg, rgba(9, 9, 11, 0.96), rgba(12, 12, 14, 0.86));
+    }
+    .spotlight-card.menu .spotlight-visual {
+      background:
+        radial-gradient(circle at 80% 0%, rgba(73, 134, 255, 0.18), transparent 40%),
+        linear-gradient(180deg, rgba(10, 12, 16, 0.97), rgba(6, 8, 12, 0.9));
+    }
+    .spotlight-stage {
+      width: min(100%, 420px);
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.32);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .spotlight-stage img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Tools */
+    .tools {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tools h2 {
+      font-size: 1.8em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .tool-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .tool-table th, .tool-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-table th {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.85em;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .tool-table td code {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Clients */
+    .clients {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .clients h2 {
+      font-size: 1.8em;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .client-slider {
+      overflow: hidden;
+      margin-top: 28px;
+      padding: 6px 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .client-track {
+      display: flex;
+      width: max-content;
+      animation: client-marquee 28s linear infinite;
+    }
+    .client-track.js-marquee {
+      animation: none;
+    }
+    .client-group {
+      display: flex;
+      gap: 18px;
+      padding-right: 18px;
+    }
+    .client-link {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      gap: 10px;
+      width: 118px;
+      height: 118px;
+      padding: 14px 12px;
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(180deg, var(--surface-top), var(--surface-bottom)),
+        var(--surface);
+      box-shadow: var(--client-shadow);
+      color: #1f1a15;
+    }
+    .client-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: var(--client-card-overlay, none);
+      pointer-events: none;
+    }
+    .client-link:hover {
+      text-decoration: none;
+    }
+    .client-logo {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+    .client-name {
+      position: relative;
+      z-index: 1;
+      display: block;
+      max-width: 92px;
+      text-align: center;
+      font-size: 0.76rem;
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .client-link[data-client="claude-code"] {
+      background:
+        radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.5), transparent 42%),
+        linear-gradient(180deg, rgba(248, 232, 217, 0.98), rgba(228, 195, 162, 0.96)),
+        #edd2b7;
+      border-color: rgba(217, 119, 87, 0.34);
+    }
+    .client-link[data-client="claude-desktop"] {
+      background:
+        radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.52), transparent 42%),
+        linear-gradient(180deg, rgba(251, 239, 228, 0.99), rgba(233, 202, 178, 0.96)),
+        #f0dbc8;
+      border-color: rgba(217, 119, 87, 0.28);
+    }
+    .client-link[data-client="codex"] {
+      background:
+        radial-gradient(circle at 24% 14%, rgba(255, 255, 255, 0.12), transparent 40%),
+        linear-gradient(180deg, rgba(54, 54, 54, 0.98), rgba(13, 13, 13, 0.99)),
+        #0d0d0d;
+      border-color: rgba(255, 255, 255, 0.14);
+      color: #f7f4ee;
+    }
+    .client-link[data-client="gemini"] {
+      background:
+        radial-gradient(circle at 22% 18%, rgba(234, 67, 53, 0.24), transparent 34%),
+        radial-gradient(circle at 78% 20%, rgba(66, 133, 244, 0.3), transparent 38%),
+        linear-gradient(135deg, rgba(255, 243, 208, 0.98), rgba(233, 242, 255, 0.98) 38%, rgba(236, 228, 255, 0.98) 72%, rgba(255, 230, 238, 0.98)),
+        #eff1ff;
+      border-color: rgba(142, 117, 178, 0.24);
+      color: #2b3448;
+    }
+    .client-link[data-client="copilot"] {
+      background:
+        radial-gradient(circle at 22% 18%, rgba(200, 152, 253, 0.46), transparent 42%),
+        radial-gradient(circle at 78% 22%, rgba(240, 138, 58, 0.34), transparent 36%),
+        linear-gradient(135deg, rgba(248, 241, 255, 0.98), rgba(237, 226, 255, 0.98) 58%, rgba(255, 229, 216, 0.98)),
+        #f0e5ff;
+      border-color: rgba(133, 52, 243, 0.22);
+      color: #321b52;
+    }
+    .client-link[data-client="cursor"] {
+      background:
+        radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.42), transparent 42%),
+        linear-gradient(180deg, rgba(247, 244, 239, 0.99), rgba(229, 223, 215, 0.97)),
+        #eee7de;
+      border-color: rgba(17, 17, 17, 0.12);
+      color: #171513;
+    }
+    .client-link[data-client="windsurf"] {
+      background:
+        radial-gradient(circle at 24% 14%, rgba(255, 255, 255, 0.12), transparent 42%),
+        linear-gradient(180deg, rgba(24, 31, 35, 0.98), rgba(11, 16, 15, 0.99)),
+        #0b100f;
+      border-color: rgba(255, 255, 255, 0.14);
+      color: #f5f7f5;
+    }
+    .client-link[data-client="vscode"] {
+      background:
+        radial-gradient(circle at 24% 16%, rgba(0, 152, 255, 0.18), transparent 42%),
+        linear-gradient(180deg, rgba(230, 244, 255, 0.98), rgba(204, 231, 255, 0.97)),
+        #d9edff;
+      border-color: rgba(0, 122, 204, 0.24);
+      color: #0f3f69;
+    }
+    .client-link[data-client="codex"] .client-logo {
+      width: 42px;
+      height: 42px;
+      filter: brightness(0) invert(1);
+    }
+    .client-link[data-client="claude-code"] .client-logo,
+    .client-link[data-client="claude-desktop"] .client-logo {
+      width: 48px;
+      height: 48px;
+    }
+    .client-link[data-client="gemini"] .client-logo {
+      width: 40px;
+      height: 40px;
+    }
+    .client-link[data-client="copilot"] .client-logo {
+      width: 44px;
+      height: 44px;
+    }
+    .client-link[data-client="cursor"] .client-logo,
+    .client-link[data-client="vscode"] .client-logo {
+      width: 42px;
+      height: 42px;
+    }
+    .client-link[data-client="windsurf"] .client-logo {
+      width: 42px;
+      height: 42px;
+      filter: brightness(0) invert(1);
+    }
+    @media (prefers-color-scheme: dark) {
+      .client-link {
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.14), rgba(6, 8, 12, 0.28));
+        color: #e7e3de;
+      }
+      .client-link[data-client="claude-code"] {
+        background:
+          radial-gradient(circle at 24% 16%, rgba(255, 214, 186, 0.12), transparent 42%),
+          linear-gradient(180deg, rgba(54, 41, 33, 0.96), rgba(27, 20, 16, 0.99)),
+          #1b1512;
+        border-color: rgba(217, 119, 87, 0.22);
+        color: #edd6c4;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.08), rgba(6, 8, 12, 0.2));
+      }
+      .client-link[data-client="claude-desktop"] {
+        background:
+          radial-gradient(circle at 24% 16%, rgba(255, 229, 206, 0.14), transparent 42%),
+          linear-gradient(180deg, rgba(64, 49, 39, 0.96), rgba(31, 24, 19, 0.99)),
+          #201915;
+        border-color: rgba(217, 119, 87, 0.2);
+        color: #f0ddd0;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.08), rgba(6, 8, 12, 0.2));
+      }
+      .client-link[data-client="gemini"] {
+        background:
+          radial-gradient(circle at 22% 18%, rgba(234, 67, 53, 0.12), transparent 34%),
+          radial-gradient(circle at 78% 20%, rgba(66, 133, 244, 0.16), transparent 38%),
+          linear-gradient(135deg, rgba(31, 34, 51, 0.98), rgba(23, 31, 52, 0.98) 38%, rgba(37, 29, 54, 0.98) 72%, rgba(46, 28, 38, 0.98)),
+          #202538;
+        border-color: rgba(142, 117, 178, 0.2);
+        color: #e4e8f8;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.12), rgba(6, 8, 12, 0.24));
+      }
+      .client-link[data-client="copilot"] {
+        background:
+          radial-gradient(circle at 22% 18%, rgba(200, 152, 253, 0.16), transparent 42%),
+          radial-gradient(circle at 78% 22%, rgba(240, 138, 58, 0.12), transparent 36%),
+          linear-gradient(135deg, rgba(39, 31, 55, 0.98), rgba(35, 29, 63, 0.98) 58%, rgba(54, 31, 35, 0.98)),
+          #2b2238;
+        border-color: rgba(133, 52, 243, 0.2);
+        color: #eee8ff;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.12), rgba(6, 8, 12, 0.24));
+      }
+      .client-link[data-client="cursor"] {
+        background:
+          radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.1), transparent 42%),
+          linear-gradient(180deg, rgba(53, 48, 43, 0.96), rgba(27, 24, 22, 0.99)),
+          #1f1b18;
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #ece5dc;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.1), rgba(6, 8, 12, 0.22));
+      }
+      .client-link[data-client="cursor"] .client-logo,
+      .client-link[data-client="copilot"] .client-logo {
+        filter: brightness(0) invert(1);
+      }
+      .client-link[data-client="vscode"] {
+        background:
+          radial-gradient(circle at 24% 16%, rgba(0, 152, 255, 0.14), transparent 42%),
+          linear-gradient(180deg, rgba(22, 46, 75, 0.97), rgba(11, 22, 37, 0.99)),
+          #0f1f33;
+        border-color: rgba(0, 122, 204, 0.2);
+        color: #d8ebff;
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.12), rgba(6, 8, 12, 0.24));
+      }
+      .client-link[data-client="codex"],
+      .client-link[data-client="windsurf"] {
+        box-shadow: 0 14px 24px rgba(0, 0, 0, 0.24);
+        --client-card-overlay: linear-gradient(180deg, rgba(6, 8, 12, 0.03), rgba(6, 8, 12, 0.12));
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .client-track {
+        animation: none;
+      }
+    }
+    @keyframes client-marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-33.333333%); }
+    }
+
+    /* Quick start */
+    .quickstart {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .quickstart h2 {
+      font-size: 1.8em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .step {
+      margin-bottom: 28px;
+    }
+    .step h3 {
+      font-size: 1em;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+    }
+    .step h3 span {
+      color: var(--accent);
+      font-family: var(--mono);
+      margin-right: 8px;
+    }
+    .prompt-demo {
+      display: grid;
+      gap: 10px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at top left, rgba(209, 28, 28, 0.08), transparent 34%),
+        linear-gradient(180deg, var(--surface-top), var(--surface-bottom)),
+        var(--surface);
+      box-shadow: 0 16px 28px var(--shadow-soft);
+    }
+    .prompt-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .prompt-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(209, 28, 28, 0.08);
+    }
+    .prompt-line {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 10px;
+      min-width: 0;
+      min-height: 1.6em;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .prompt-prefix {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .prompt-body {
+      min-width: 0;
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+    .prompt-text {
+      color: inherit;
+    }
+    .prompt-caret {
+      display: inline-block;
+      margin-left: 2px;
+      vertical-align: -0.12em;
+      width: 9px;
+      height: 1.15em;
+      border-radius: 2px;
+      background: var(--accent);
+      animation: prompt-caret-blink 1s steps(1) infinite;
+    }
+    @keyframes prompt-caret-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .prompt-caret {
+        animation: none;
+      }
+    }
+
+    /* Footer */
+    .footer {
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.9em;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .footer-credit {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      text-align: center;
+    }
+    .footer-heart {
+      color: var(--accent);
+      line-height: 1;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .spotlight-card,
+      .spotlight-card.menu {
+        grid-template-columns: 1fr;
+      }
+      .architecture-step,
+      .architecture-connector {
+        grid-template-columns: 1fr;
+      }
+      .architecture-gap {
+        display: none;
+      }
+      .flow-copy-text {
+        padding-left: 44px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2em; }
+      .hero p { font-size: 1em; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .tool-table { font-size: 0.85em; }
+      .flow-diagram-node,
+      .flow-diagram-link {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+      .flow-copy-text {
+        padding-left: 0;
+      }
+      .client-link {
+        gap: 8px;
+        width: 96px;
+        height: 102px;
+        padding: 12px 10px;
+        border-radius: 22px;
+      }
+      .client-logo {
+        width: 38px;
+        height: 38px;
+      }
+      .client-name {
+        max-width: 72px;
+        font-size: 0.68rem;
+      }
+      .footer-inner { gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-mark">
+      <img src="assets/logo.png" alt="YouTube Music MCP logo" loading="eager" decoding="async" fetchpriority="high">
+    </div>
+    <h1>YouTube Music <span>MCP</span></h1>
+    <p>Control YouTube Music from MCP clients through the Model Context Protocol. Install the macOS bridge app from the DMG, enable the Safari extension, and connect Codex, Claude Code, Claude Desktop, Gemini CLI, GitHub Copilot, Cursor, Windsurf, VS Code, or another MCP-compatible client.</p>
+    <div class="hero-buttons">
+      <a href="https://github.com/ramin0/youtube-music-mcp/releases/latest" class="btn btn-primary">
+        Download
+      </a>
+      <a href="https://github.com/RaMin0/youtube-music-mcp/blob/main/docs/youtube-music-mcp/setup-guide.md" class="btn-icon" title="Setup Guide" aria-label="Setup Guide">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+      </a>
+      <a href="https://github.com/ramin0/youtube-music-mcp" class="btn-icon" title="View on GitHub" aria-label="View on GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+    </div>
+    <div id="version-badge" class="version-badge">v0.1.0</div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2>Features</h2>
+    <div class="feature-spotlight">
+      <article class="spotlight-card playback">
+        <div class="spotlight-copy">
+          <span class="spotlight-kicker">Featured</span>
+          <div class="spotlight-title">
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/></svg>
+            <h3>Playback Control</h3>
+          </div>
+          <p>Play, pause, next, previous, seek, and volume control through natural language, with the bridge visibly connected right inside the YouTube Music app.</p>
+          <div class="spotlight-pills">
+            <span class="spotlight-pill">Natural language</span>
+            <span class="spotlight-pill">Seek + volume</span>
+            <span class="spotlight-pill">Live connected state</span>
+          </div>
+        </div>
+        <div class="spotlight-visual">
+          <div class="spotlight-stage">
+            <img src="assets/screenshots/playback-control.webp" alt="YouTube Music app playback view with the bridge connected inside the app" width="652" height="422" loading="eager" decoding="async" fetchpriority="high">
+          </div>
+        </div>
+      </article>
+      <article class="spotlight-card menu">
+        <div class="spotlight-visual">
+          <div class="spotlight-stage">
+            <img src="assets/screenshots/menu-bar-app.webp" alt="YouTube Music MCP menu bar player with the connected icon in the menu bar and the player dropdown open" width="654" height="422" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <div class="spotlight-copy">
+          <span class="spotlight-kicker">Native macOS</span>
+          <div class="spotlight-title">
+            <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"/></svg>
+            <h3>Menu Bar App</h3>
+          </div>
+          <p>The native bridge lives in the menu bar, shows its connected icon while running, and opens a dropdown with transport controls, progress, shuffle, and repeat.</p>
+          <div class="spotlight-pills">
+            <span class="spotlight-pill">Runs quietly</span>
+            <span class="spotlight-pill">Connected status</span>
+            <span class="spotlight-pill">Quick controls</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+        <h3>Search &amp; Play</h3>
+        <p>Search YouTube Music and immediately play the first result, all via MCP.</p>
+      </div>
+      <div class="feature-card">
+        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg>
+        <h3>Repeat &amp; Shuffle</h3>
+        <p>Set repeat mode (off, one, all, or A-&gt;B section loop) and shuffle (on, off, toggle).</p>
+      </div>
+      <div class="feature-card">
+        <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/></svg>
+        <h3>Multi-Tab Support</h3>
+        <p>List and target specific YouTube Music tabs when multiple are open.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="architecture">
+  <div class="container">
+    <h2>How It Works</h2>
+    <p class="section-intro">A request starts in your MCP client, moves through the local bridge stack, and ends in the active YouTube Music tab.</p>
+    <div class="architecture-flow">
+      <div class="architecture-step">
+        <div class="flow-diagram-node">
+          <span class="flow-badge">1</span>
+          <strong>MCP Client</strong>
+        </div>
+        <p class="flow-copy-text">Codex, Claude Code, Claude Desktop, Gemini CLI, GitHub Copilot, Cursor, Windsurf, VS Code, or another MCP-compatible client can invoke the tools.</p>
+      </div>
+      <div class="architecture-connector" aria-hidden="true">
+        <div class="flow-diagram-link">
+          <span class="flow-diagram-line"></span>
+          <span class="flow-diagram-label">MCP / JSON-RPC</span>
+        </div>
+        <div class="architecture-gap"></div>
+      </div>
+      <div class="architecture-step">
+        <div class="flow-diagram-node">
+          <span class="flow-badge">2</span>
+          <strong>Go MCP Server</strong>
+        </div>
+        <p class="flow-copy-text">The local server exposes the MCP tool surface and turns client requests into bridge commands.</p>
+      </div>
+      <div class="architecture-connector" aria-hidden="true">
+        <div class="flow-diagram-link">
+          <span class="flow-diagram-line"></span>
+          <span class="flow-diagram-label">HTTP / localhost:8765</span>
+        </div>
+        <div class="architecture-gap"></div>
+      </div>
+      <div class="architecture-step">
+        <div class="flow-diagram-node">
+          <span class="flow-badge">3</span>
+          <strong>macOS Bridge App</strong>
+        </div>
+        <p class="flow-copy-text">The menu bar app keeps the local HTTP endpoint alive and coordinates the live Safari connection state.</p>
+      </div>
+      <div class="architecture-connector" aria-hidden="true">
+        <div class="flow-diagram-link">
+          <span class="flow-diagram-line"></span>
+          <span class="flow-diagram-label">WebSocket</span>
+        </div>
+        <div class="architecture-gap"></div>
+      </div>
+      <div class="architecture-step">
+        <div class="flow-diagram-node">
+          <span class="flow-badge">4</span>
+          <strong>Safari Extension</strong>
+        </div>
+        <p class="flow-copy-text">The extension runs inside Safari, forwards actions to the page, and reads playback state back out.</p>
+      </div>
+      <div class="architecture-connector" aria-hidden="true">
+        <div class="flow-diagram-link">
+          <span class="flow-diagram-line"></span>
+          <span class="flow-diagram-label">DOM automation</span>
+        </div>
+        <div class="architecture-gap"></div>
+      </div>
+      <div class="architecture-step">
+        <div class="flow-diagram-node">
+          <span class="flow-badge">5</span>
+          <strong>YouTube Music</strong>
+        </div>
+        <p class="flow-copy-text">The final action happens in the actual YouTube Music web player running in your active tab.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tools">
+  <div class="container">
+    <h2>MCP Tools</h2>
+    <table class="tool-table">
+      <thead>
+        <tr><th>Tool</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>list_youtube_music_tabs</code></td><td>List connected YouTube Music tabs</td></tr>
+        <tr><td><code>get_playback_state</code></td><td>Current track, position, volume, repeat &amp; shuffle state</td></tr>
+        <tr><td><code>play</code></td><td>Resume playback</td></tr>
+        <tr><td><code>pause</code></td><td>Pause playback</td></tr>
+        <tr><td><code>next_track</code></td><td>Skip to next track</td></tr>
+        <tr><td><code>previous_track</code></td><td>Go to previous track</td></tr>
+        <tr><td><code>set_volume</code></td><td>Set volume (0-100%)</td></tr>
+        <tr><td><code>seek</code></td><td>Seek to position in seconds</td></tr>
+        <tr><td><code>set_repeat_mode</code></td><td>off, one, all, or section (A->B loop)</td></tr>
+        <tr><td><code>set_shuffle</code></td><td>on, off, or toggle</td></tr>
+        <tr><td><code>search_and_play</code></td><td>Search and play first result</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="clients" class="clients">
+  <div class="container">
+    <h2>MCP Clients</h2>
+    <p class="section-intro">Common MCP hosts mentioned across popular GitHub MCP server docs include Claude Code, Claude Desktop, Codex, Cursor, Gemini CLI, GitHub Copilot, VS Code, and Windsurf.</p>
+    <div class="client-slider" aria-label="Supported MCP clients">
+      <div class="client-track">
+        <div class="client-group">
+          <a class="client-link" data-client="claude-code" href="https://claude.ai/code" target="_blank" rel="noreferrer" title="Claude Code" aria-label="Claude Code">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Code</span>
+          </a>
+          <a class="client-link" data-client="claude-desktop" href="https://claude.ai/download" target="_blank" rel="noreferrer" title="Claude Desktop" aria-label="Claude Desktop">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Desktop</span>
+          </a>
+          <a class="client-link" data-client="codex" href="https://openai.com/codex/" target="_blank" rel="noreferrer" title="OpenAI Codex" aria-label="OpenAI Codex">
+            <img class="client-logo" src="assets/clients/codex.svg" alt="" loading="lazy">
+            <span class="client-name">Codex</span>
+          </a>
+          <a class="client-link" data-client="cursor" href="https://cursor.com/" target="_blank" rel="noreferrer" title="Cursor" aria-label="Cursor">
+            <img class="client-logo" src="assets/clients/cursor.svg" alt="" loading="lazy">
+            <span class="client-name">Cursor</span>
+          </a>
+          <a class="client-link" data-client="gemini" href="https://ai.google.dev/gemini-api/docs/cli" target="_blank" rel="noreferrer" title="Gemini CLI" aria-label="Gemini CLI">
+            <img class="client-logo" src="assets/clients/gemini.svg" alt="" loading="lazy">
+            <span class="client-name">Gemini CLI</span>
+          </a>
+          <a class="client-link" data-client="copilot" href="https://github.com/features/copilot" target="_blank" rel="noreferrer" title="GitHub Copilot" aria-label="GitHub Copilot">
+            <img class="client-logo" src="assets/clients/copilot.svg" alt="" loading="lazy">
+            <span class="client-name">GitHub Copilot</span>
+          </a>
+          <a class="client-link" data-client="vscode" href="https://code.visualstudio.com/" target="_blank" rel="noreferrer" title="VS Code" aria-label="VS Code">
+            <img class="client-logo" src="assets/clients/vscode.svg" alt="" loading="lazy">
+            <span class="client-name">VS Code</span>
+          </a>
+          <a class="client-link" data-client="windsurf" href="https://windsurf.com/" target="_blank" rel="noreferrer" title="Windsurf" aria-label="Windsurf">
+            <img class="client-logo" src="assets/clients/windsurf.svg" alt="" loading="lazy">
+            <span class="client-name">Windsurf</span>
+          </a>
+        </div>
+        <div class="client-group" aria-hidden="true">
+          <a class="client-link" data-client="claude-code" href="https://claude.ai/code" target="_blank" rel="noreferrer" title="Claude Code" aria-label="Claude Code">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Code</span>
+          </a>
+          <a class="client-link" data-client="claude-desktop" href="https://claude.ai/download" target="_blank" rel="noreferrer" title="Claude Desktop" aria-label="Claude Desktop">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Desktop</span>
+          </a>
+          <a class="client-link" data-client="codex" href="https://openai.com/codex/" target="_blank" rel="noreferrer" title="OpenAI Codex" aria-label="OpenAI Codex">
+            <img class="client-logo" src="assets/clients/codex.svg" alt="" loading="lazy">
+            <span class="client-name">Codex</span>
+          </a>
+          <a class="client-link" data-client="cursor" href="https://cursor.com/" target="_blank" rel="noreferrer" title="Cursor" aria-label="Cursor">
+            <img class="client-logo" src="assets/clients/cursor.svg" alt="" loading="lazy">
+            <span class="client-name">Cursor</span>
+          </a>
+          <a class="client-link" data-client="gemini" href="https://ai.google.dev/gemini-api/docs/cli" target="_blank" rel="noreferrer" title="Gemini CLI" aria-label="Gemini CLI">
+            <img class="client-logo" src="assets/clients/gemini.svg" alt="" loading="lazy">
+            <span class="client-name">Gemini CLI</span>
+          </a>
+          <a class="client-link" data-client="copilot" href="https://github.com/features/copilot" target="_blank" rel="noreferrer" title="GitHub Copilot" aria-label="GitHub Copilot">
+            <img class="client-logo" src="assets/clients/copilot.svg" alt="" loading="lazy">
+            <span class="client-name">GitHub Copilot</span>
+          </a>
+          <a class="client-link" data-client="vscode" href="https://code.visualstudio.com/" target="_blank" rel="noreferrer" title="VS Code" aria-label="VS Code">
+            <img class="client-logo" src="assets/clients/vscode.svg" alt="" loading="lazy">
+            <span class="client-name">VS Code</span>
+          </a>
+          <a class="client-link" data-client="windsurf" href="https://windsurf.com/" target="_blank" rel="noreferrer" title="Windsurf" aria-label="Windsurf">
+            <img class="client-logo" src="assets/clients/windsurf.svg" alt="" loading="lazy">
+            <span class="client-name">Windsurf</span>
+          </a>
+        </div>
+        <div class="client-group" aria-hidden="true">
+          <a class="client-link" data-client="claude-code" href="https://claude.ai/code" target="_blank" rel="noreferrer" title="Claude Code" aria-label="Claude Code">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Code</span>
+          </a>
+          <a class="client-link" data-client="claude-desktop" href="https://claude.ai/download" target="_blank" rel="noreferrer" title="Claude Desktop" aria-label="Claude Desktop">
+            <img class="client-logo" src="assets/clients/claude.svg" alt="" loading="lazy">
+            <span class="client-name">Claude Desktop</span>
+          </a>
+          <a class="client-link" data-client="codex" href="https://openai.com/codex/" target="_blank" rel="noreferrer" title="OpenAI Codex" aria-label="OpenAI Codex">
+            <img class="client-logo" src="assets/clients/codex.svg" alt="" loading="lazy">
+            <span class="client-name">Codex</span>
+          </a>
+          <a class="client-link" data-client="cursor" href="https://cursor.com/" target="_blank" rel="noreferrer" title="Cursor" aria-label="Cursor">
+            <img class="client-logo" src="assets/clients/cursor.svg" alt="" loading="lazy">
+            <span class="client-name">Cursor</span>
+          </a>
+          <a class="client-link" data-client="gemini" href="https://ai.google.dev/gemini-api/docs/cli" target="_blank" rel="noreferrer" title="Gemini CLI" aria-label="Gemini CLI">
+            <img class="client-logo" src="assets/clients/gemini.svg" alt="" loading="lazy">
+            <span class="client-name">Gemini CLI</span>
+          </a>
+          <a class="client-link" data-client="copilot" href="https://github.com/features/copilot" target="_blank" rel="noreferrer" title="GitHub Copilot" aria-label="GitHub Copilot">
+            <img class="client-logo" src="assets/clients/copilot.svg" alt="" loading="lazy">
+            <span class="client-name">GitHub Copilot</span>
+          </a>
+          <a class="client-link" data-client="vscode" href="https://code.visualstudio.com/" target="_blank" rel="noreferrer" title="VS Code" aria-label="VS Code">
+            <img class="client-logo" src="assets/clients/vscode.svg" alt="" loading="lazy">
+            <span class="client-name">VS Code</span>
+          </a>
+          <a class="client-link" data-client="windsurf" href="https://windsurf.com/" target="_blank" rel="noreferrer" title="Windsurf" aria-label="Windsurf">
+            <img class="client-logo" src="assets/clients/windsurf.svg" alt="" loading="lazy">
+            <span class="client-name">Windsurf</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quickstart">
+  <div class="container">
+    <h2>Quick Start</h2>
+
+    <div class="step">
+      <h3><span>1.</span> Install the bridge app from the DMG</h3>
+      <p class="muted"><a href="https://github.com/ramin0/youtube-music-mcp/releases/latest">Download</a> the latest DMG, drag "YouTube Music MCP Bridge.app" to Applications, and open the app once.</p>
+    </div>
+
+    <div class="step">
+      <h3><span>2.</span> Enable the Safari extension</h3>
+      <p class="muted">In Safari, go to Settings &gt; Extensions, enable "YouTube Music MCP Bridge", then open <code>music.youtube.com</code>.</p>
+    </div>
+
+    <div class="step">
+      <h3><span>3.</span> Follow the setup guide for your client</h3>
+      <p class="muted">The <a href="https://github.com/RaMin0/youtube-music-mcp/blob/main/docs/youtube-music-mcp/setup-guide.md">setup guide</a> includes client-specific setup for Codex, Claude Code, Claude Desktop, Cursor, Gemini CLI, GitHub Copilot, VS Code, and Windsurf.</p>
+    </div>
+
+    <div class="step">
+      <h3><span>4.</span> Ask your client to play music</h3>
+      <div class="prompt-demo" aria-label="Example AI client prompt">
+        <span class="prompt-label"><span class="prompt-dot" aria-hidden="true"></span>Prompt</span>
+        <div class="prompt-line">
+          <span class="prompt-prefix" aria-hidden="true">&gt;</span>
+          <span class="prompt-body"><span id="quickstart-prompt-text" class="prompt-text">Play some lo-fi hip hop on YouTube Music</span><span class="prompt-caret" aria-hidden="true"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-links">
+      <a href="https://github.com/RaMin0/youtube-music-mcp/blob/main/docs/youtube-music-mcp/setup-guide.md">Setup Guide</a> &middot;
+      <a href="https://github.com/RaMin0/youtube-music-mcp/blob/main/docs/youtube-music-mcp/adr/README.md">Architecture Docs</a> &middot;
+      <a href="https://github.com/RaMin0/youtube-music-mcp">GitHub</a> &middot;
+      <a href="https://github.com/RaMin0/youtube-music-mcp/releases">Releases</a> &middot;
+      <a href="https://github.com/RaMin0/youtube-music-mcp/blob/main/LICENSE">MIT License</a>
+    </div>
+    <div class="footer-credit">
+      <span>Made with</span>
+      <span class="footer-heart" aria-hidden="true">&hearts;</span>
+      <span>by</span>
+      <a href="https://ramy.aboulna.ga">Ramy Aboulnaga</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const promptText = document.getElementById("quickstart-prompt-text");
+  const clientSlider = document.querySelector(".client-slider");
+  const clientTrack = document.querySelector(".client-track");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const startPromptDemo = () => {
+    if (!promptText || reduceMotion.matches) {
+      return;
+    }
+
+    const promptExamples = [
+      "Play some lo-fi hip hop on YouTube Music",
+      "Search for Amr Diab and play the first result",
+      "Set volume to 35%",
+      "Loop the section from 52 seconds to 1 minute 7 seconds",
+      "Turn shuffle on and skip to the next track",
+      "Pause the music"
+    ];
+
+    let promptIndex = 0;
+    let charIndex = promptExamples[0].length;
+    let isDeleting = false;
+
+    const typePrompt = () => {
+      const currentPrompt = promptExamples[promptIndex];
+
+      promptText.textContent = currentPrompt.slice(0, charIndex);
+
+      if (!isDeleting && charIndex === currentPrompt.length) {
+        isDeleting = true;
+        window.setTimeout(typePrompt, 1500);
+        return;
+      }
+
+      if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        promptIndex = (promptIndex + 1) % promptExamples.length;
+        window.setTimeout(typePrompt, 240);
+        return;
+      }
+
+      charIndex += isDeleting ? -1 : 1;
+      window.setTimeout(typePrompt, isDeleting ? 18 : 34);
+    };
+
+    window.setTimeout(typePrompt, 1200);
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(startPromptDemo, { timeout: 1800 });
+  } else {
+    window.setTimeout(startPromptDemo, 0);
+  }
+
+  const startClientMarquee = () => {
+    if (!clientSlider || !clientTrack || reduceMotion.matches || typeof clientTrack.animate !== "function") {
+      return;
+    }
+
+    clientTrack.classList.add("js-marquee");
+
+    const marqueeAnimation = clientTrack.animate(
+      [
+        { transform: "translateX(0)" },
+        { transform: "translateX(-33.333333%)" }
+      ],
+      {
+        duration: 28000,
+        iterations: Infinity,
+        easing: "linear"
+      }
+    );
+
+    let pointerInside = false;
+    let focusInside = false;
+
+    const syncMarqueeState = () => {
+      if (pointerInside || focusInside) {
+        marqueeAnimation.pause();
+      } else {
+        marqueeAnimation.play();
+      }
+    };
+
+    clientSlider.addEventListener("pointerenter", () => {
+      pointerInside = true;
+      syncMarqueeState();
+    });
+
+    clientSlider.addEventListener("pointerleave", () => {
+      pointerInside = false;
+      syncMarqueeState();
+    });
+
+    clientSlider.addEventListener("focusin", () => {
+      focusInside = true;
+      syncMarqueeState();
+    });
+
+    clientSlider.addEventListener("focusout", (event) => {
+      if (event.relatedTarget instanceof Node && clientSlider.contains(event.relatedTarget)) {
+        return;
+      }
+
+      focusInside = false;
+      syncMarqueeState();
+    });
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(startClientMarquee, { timeout: 1200 });
+  } else {
+    window.setTimeout(startClientMarquee, 0);
+  }
+</script>
+
+</body>
+</html>

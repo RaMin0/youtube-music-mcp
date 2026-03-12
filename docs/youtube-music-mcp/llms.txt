@@ -1,0 +1,64 @@
+# YouTube Music MCP
+
+> Control YouTube Music from AI assistants through the Model Context Protocol.
+
+YouTube Music MCP is a Safari-first MCP server that bridges Claude (or any MCP client) to YouTube Music via a local macOS bridge app and Safari Web Extension.
+
+## Architecture
+
+MCP Client (Claude Desktop, Claude Code, etc.)
+  → Go MCP Server (stdio, JSON-RPC)
+    → macOS Bridge App (HTTP, localhost:8765)
+      → Safari Web Extension (WebSocket)
+        → YouTube Music (DOM automation)
+
+The Go MCP server is stateless and communicates with the macOS bridge app over HTTP. The bridge app manages WebSocket connections to Safari extension content scripts running on YouTube Music tabs.
+
+## MCP Tools
+
+- list_youtube_music_tabs: List connected Safari YouTube Music tabs
+- get_playback_state: Get current track, position, volume, repeat/shuffle state
+- play: Resume playback
+- pause: Pause playback
+- next_track: Skip to next track
+- previous_track: Go to previous track
+- set_volume: Set volume (0-100%)
+- seek: Seek to position in seconds
+- set_repeat_mode: Set repeat mode (off, one, all, or section for A-B loop)
+- set_shuffle: Set shuffle (on, off, or toggle)
+- search_and_play: Search YouTube Music and play first result
+
+## A-B Section Repeat
+
+set_repeat_mode supports looping a specific segment:
+  set_repeat_mode(mode="section", section_start_seconds=30, section_end_seconds=60)
+
+## Configuration
+
+Environment variables:
+- YTM_APP_SERVER_URL (default: http://127.0.0.1:8765) - Bridge app URL
+- YTM_BRIDGE_TOKEN - Shared bearer token for bridge authentication
+- YTM_TAB_URL_MATCH (default: music.youtube.com) - URL filter for tab matching
+- YTM_COMMAND_TIMEOUT_SECONDS (default: 30) - Action timeout
+- YTM_DEBUG_LOGS (default: false) - Enable debug logging
+
+## Prerequisites
+
+- macOS 13+
+- Safari 17+
+- Go 1.21+
+- Xcode (for building the bridge app)
+- Node.js 18+ (for TypeScript build)
+
+## Quick Start
+
+1. make build (Go MCP server)
+2. make bridge-install && make bridge-restart (bridge app + extension)
+3. Enable extension in Safari > Settings > Extensions
+4. Add MCP server path to your MCP client config
+5. Open YouTube Music in Safari
+
+## Links
+
+- Source: https://github.com/ramin0/youtube-music-mcp
+- License: MIT

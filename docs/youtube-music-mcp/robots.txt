@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ramin0.me/youtube-music-mcp/sitemap.xml
+LLMs: https://ramin0.me/youtube-music-mcp/llms.txt
